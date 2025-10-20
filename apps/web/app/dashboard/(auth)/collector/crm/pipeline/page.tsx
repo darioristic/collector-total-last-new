@@ -96,7 +96,7 @@ export default function PipelinePage() {
     try {
       setLoading(true);
       
-      const response = await authenticatedFetch('/api/crm/leads', {}, token);
+      const response = await authenticatedFetch('/api/crm/leads', {}, token || undefined);
       const data = await response.json();
 
       if (data.success) {

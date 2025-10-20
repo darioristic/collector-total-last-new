@@ -12,17 +12,19 @@
     "test": "tsx scripts/test-notifications.ts"
   },
   "dependencies": {
+    "@prisma/client": "^6.17.1",
+    "@supabase/supabase-js": "^2.76.0",
+    "firebase-admin": "^11.11.0",
+    "ioredis": "^5.3.0",
+    "lucide-react": "^0.546.0",
     "next": "^14.0.0",
+    "nodemailer": "^6.9.0",
+    "prisma": "^6.17.1",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
-    "@prisma/client": "^6.17.1",
-    "prisma": "^6.17.1",
     "redis": "^4.6.0",
-    "ioredis": "^5.3.0",
-    "zod": "^3.22.0",
-    "nodemailer": "^6.9.0",
-    "firebase-admin": "^11.11.0",
-    "ws": "^8.14.0"
+    "ws": "^8.14.0",
+    "zod": "^3.22.0"
   },
   "devDependencies": {
     "@types/node": "^20.10.0",

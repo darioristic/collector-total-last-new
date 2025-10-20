@@ -20,7 +20,7 @@ export class NotificationRealtime {
           table: 'notifications',
           filter: `user_id=eq.${userId}`
         },
-        (payload) => {
+        (payload: any) => {
           console.log('New notification received:', payload.new)
           onNotification(payload.new as Notification)
         }
@@ -33,12 +33,12 @@ export class NotificationRealtime {
           table: 'notifications',
           filter: `user_id=eq.${userId}`
         },
-        (payload) => {
+        (payload: any) => {
           console.log('Notification updated:', payload.new)
           onNotification(payload.new as Notification)
         }
       )
-      .subscribe((status) => {
+      .subscribe((status: any) => {
         if (status === 'SUBSCRIBED') {
           console.log(`Subscribed to notifications for user ${userId}`)
         } else if (status === 'CHANNEL_ERROR') {
@@ -83,7 +83,7 @@ export class NotificationRealtime {
           }
         }
       )
-      .subscribe((status) => {
+      .subscribe((status: any) => {
         if (status === 'SUBSCRIBED') {
           console.log(`Subscribed to notification count for user ${userId}`)
         } else if (status === 'CHANNEL_ERROR') {

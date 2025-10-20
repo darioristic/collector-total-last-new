@@ -1,5 +1,5 @@
 import Redis from 'ioredis'
-import { Server as WebSocketServer } from 'ws'
+import { WebSocketServer } from 'ws'
 import { WebSocket } from 'ws'
 
 // Redis client za caching i pub/sub
@@ -7,7 +7,6 @@ export const redis = new Redis({
   host: process.env.REDIS_HOST || 'localhost',
   port: parseInt(process.env.REDIS_PORT || '6379'),
   password: process.env.REDIS_PASSWORD,
-  retryDelayOnFailover: 100,
   maxRetriesPerRequest: 3,
   lazyConnect: true,
 })

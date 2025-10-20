@@ -122,7 +122,7 @@ const createExtensions = (placeholder: string) => [
     allowBase64: true,
     allowedMimeTypes: ["image/*"],
     maxFileSize: 5 * 1024 * 1024,
-    onDrop: (editor, files, pos) => {
+    onDrop: (editor: Editor, files: File[], pos: number) => {
       files.forEach(async (file) => {
         const src = await fileToBase64(file);
         editor.commands.insertContentAt(pos, {
@@ -131,7 +131,7 @@ const createExtensions = (placeholder: string) => [
         });
       });
     },
-    onPaste: (editor, files) => {
+    onPaste: (editor: Editor, files: File[]) => {
       files.forEach(async (file) => {
         const src = await fileToBase64(file);
         editor.commands.insertContent({
@@ -140,8 +140,8 @@ const createExtensions = (placeholder: string) => [
         });
       });
     },
-    onValidationError: (errors) => {
-      errors.forEach((error) => {
+    onValidationError: (errors: any[]) => {
+      errors.forEach((error: any) => {
         toast.error("Image validation error", {
           position: "bottom-right",
           description: error.reason

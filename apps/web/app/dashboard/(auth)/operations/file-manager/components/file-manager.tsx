@@ -415,7 +415,7 @@ export function FileManager() {
             </div>
 
             {sortedAndFilteredItems.map((item) => (
-              <div
+              <li
                 key={item.id}
                 className={cn(
                   "hover:bg-muted flex cursor-pointer items-center justify-between border-b p-2 lg:p-4",
@@ -427,8 +427,7 @@ export function FileManager() {
                     e.preventDefault();
                     handleItemClick(item);
                   }
-                }}
-                role="listitem">
+                }}>
                 <div className="flex min-w-0 items-center space-x-4">
                   <Checkbox
                     defaultChecked={selectedItem?.id === item.id}
@@ -464,6 +463,7 @@ export function FileManager() {
                   </DropdownMenu>
                 </div>
               </div>
+              </li>
             ))}
 
             {sortedAndFilteredItems.length === 0 && searchQuery && (

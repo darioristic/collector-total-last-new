@@ -105,11 +105,15 @@ dev-restart:
 # Database utilities
 db-reset:
 	@echo "Resetting database..."
-	cd apps/web && bunx prisma db push --force-reset && bun run db:seed
+	cd apps/web && \
+	export DATABASE_URL="postgresql://collector_user:collector_password@localhost:5432/collector_db" && \
+	bunx prisma db push --force-reset && bun run db:seed
 
 db-migrate-dev:
 	@echo "Running database migrations for development..."
-	cd apps/web && bunx prisma db push
+	cd apps/web && \
+	export DATABASE_URL="postgresql://collector_user:collector_password@localhost:5432/collector_db" && \
+	bunx prisma db push
 
 # Code quality
 lint-all:

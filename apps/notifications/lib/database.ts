@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client'
+import { NotificationCache } from './redis'
 
 export const prisma = new PrismaClient({
   log: process.env.NODE_ENV === 'development' ? ['query', 'info', 'warn', 'error'] : ['error']
@@ -188,3 +189,6 @@ export class NotificationDatabase {
     })
   }
 }
+
+// Re-export NotificationCache from redis
+export { NotificationCache }

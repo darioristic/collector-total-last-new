@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { ChevronsUpDown, ShoppingBagIcon, UserCircle2Icon } from "lucide-react";
+import { ChevronsUpDown, ShoppingBagIcon, UserCircle2Icon, PlusIcon } from "lucide-react";
 import { useIsTablet } from "@/hooks/use-mobile";
 import Link from "next/link";
 
@@ -18,6 +18,7 @@ import {
 import { NavMain } from "@/components/layout/sidebar/nav-main";
 import { NavUser } from "@/components/layout/sidebar/nav-user";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Button } from "@/components/ui/button";
 import Logo from "@/components/layout/logo";
 import {
   DropdownMenu,

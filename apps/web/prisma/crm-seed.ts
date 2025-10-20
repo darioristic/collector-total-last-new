@@ -232,7 +232,7 @@ async function main() {
   console.log(`- Customers: ${customers.length}`);
   console.log(`- Leads: ${leads.length}`);
   console.log(`- Invoices: ${invoices.length}`);
-  console.log(`- Total Pipeline Value: $${leads.reduce((sum, lead) => sum + (lead.value || 0), 0).toLocaleString()}`);
+  console.log(`- Total Pipeline Value: $${leads.reduce((sum, lead) => sum + Number(lead.value || 0), 0).toLocaleString()}`);
 }
 
 main()

@@ -66,9 +66,9 @@ export async function POST(request: NextRequest) {
         pushEnabled: validatedData.push_enabled,
         smsEnabled: validatedData.sms_enabled,
         inAppEnabled: validatedData.in_app_enabled,
-        emailTypes: validatedData.email_types,
-        pushTypes: validatedData.push_types,
-        smsTypes: validatedData.sms_types,
+        emailTypes: validatedData.email_types?.join(','),
+        pushTypes: validatedData.push_types?.join(','),
+        smsTypes: validatedData.sms_types?.join(','),
         quietHoursStart: validatedData.quiet_hours_start,
         quietHoursEnd: validatedData.quiet_hours_end,
       }

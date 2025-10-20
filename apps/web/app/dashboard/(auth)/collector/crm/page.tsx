@@ -65,8 +65,8 @@ export default function CRMDashboard() {
       setLoading(true);
       
       const [customersResponse, leadsResponse] = await Promise.all([
-        authenticatedFetch('/api/crm/customers', {}, token),
-        authenticatedFetch('/api/crm/leads', {}, token)
+        authenticatedFetch('/api/crm/customers', {}, token || undefined),
+        authenticatedFetch('/api/crm/leads', {}, token || undefined)
       ]);
 
       const customersData = await customersResponse.json();

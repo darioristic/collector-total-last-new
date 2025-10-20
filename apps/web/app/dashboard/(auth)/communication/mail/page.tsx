@@ -1,7 +1,7 @@
 import { cookies } from "next/headers";
 import { generateMeta } from "@/lib/utils";
 
-import { Mail } from "./components/mail";
+import { MailComponent as Mail } from "./components/mail";
 import { accounts, mails } from "./data";
 
 export async function generateMetadata() {

@@ -86,7 +86,7 @@ async function handleSingleSend(body: any) {
       type: validatedData.type,
       channel: validatedData.channels[0], // Store primary channel
       status: 'pending',
-      metadata: validatedData.metadata,
+      metadata: validatedData.metadata ? JSON.stringify(validatedData.metadata) : undefined,
       expiresAt: validatedData.expires_at ? new Date(validatedData.expires_at) : undefined,
     })
 
@@ -120,7 +120,7 @@ async function handleBulkSend(body: any) {
           type: validatedData.type,
           channel: validatedData.channels[0],
           status: 'pending',
-          metadata: validatedData.metadata,
+          metadata: validatedData.metadata ? JSON.stringify(validatedData.metadata) : undefined,
           expiresAt: validatedData.expires_at ? new Date(validatedData.expires_at) : undefined,
         })
       )
