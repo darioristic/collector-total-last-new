@@ -210,7 +210,7 @@ export function NavMain() {
                             <DropdownMenuLabel>{item.title}</DropdownMenuLabel>
                             {item.items?.map((subItem) => (
                               <DropdownMenuItem
-                                className="hover:text-foreground active:text-foreground hover:bg-(--primary)/10! active:bg-(--primary)/10!"
+                                className="hover:text-foreground active:text-foreground hover:bg-primary/10! active:bg-primary/10!"
                                 asChild
                                 key={subItem.title}>
                                 <a href={subItem.href}>{subItem.title}</a>
@@ -222,7 +222,7 @@ export function NavMain() {
                       <Collapsible className="group/collapsible block group-data-[collapsible=icon]:hidden">
                         <CollapsibleTrigger asChild>
                           <SidebarMenuButton
-                            className="hover:text-foreground active:text-foreground hover:bg-(--primary)/10 active:bg-(--primary)/10"
+                            className="hover:text-foreground active:text-foreground hover:bg-primary/10 active:bg-primary/10"
                             tooltip={item.title}>
                             {item.icon && <item.icon />}
                             <span>{item.title}</span>
@@ -231,10 +231,10 @@ export function NavMain() {
                         </CollapsibleTrigger>
                         <CollapsibleContent>
                           <SidebarMenuSub>
-                            {item?.items?.map((subItem, key) => (
-                              <SidebarMenuSubItem key={key}>
+                            {item?.items?.map((subItem, index) => (
+                              <SidebarMenuSubItem key={`${subItem.title}-${index}`}>
                                 <SidebarMenuSubButton
-                                  className="hover:text-foreground active:text-foreground hover:bg-(--primary)/10 active:bg-(--primary)/10"
+                                  className="hover:text-foreground active:text-foreground hover:bg-primary/10 active:bg-primary/10"
                                   isActive={pathname === subItem.href}
                                   asChild>
                                   <Link href={subItem.href} target={subItem.newTab ? "_blank" : ""}>
@@ -249,7 +249,7 @@ export function NavMain() {
                     </>
                   ) : (
                     <SidebarMenuButton
-                      className="hover:text-foreground active:text-foreground hover:bg-(--primary)/10 active:bg-(--primary)/10"
+                      className="hover:text-foreground active:text-foreground hover:bg-primary/10 active:bg-primary/10"
                       isActive={pathname === item.href}
                       tooltip={item.title}
                       asChild>

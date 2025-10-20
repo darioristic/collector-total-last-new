@@ -236,7 +236,7 @@ export function FileManager() {
   useEffect(() => {
     setSelectedItem(null);
     setShowMobileDetails(false);
-  }, [currentPath]);
+  }, []);
 
   const handleSortChange = (option: SortOption) => {
     if (sortBy === option) {
@@ -321,7 +321,7 @@ export function FileManager() {
                       </BreadcrumbItem>
                       <BreadcrumbSeparator />
                       {pathSegments.map((segment, i) => (
-                        <React.Fragment key={`${segment}-${i}`}>
+                        <React.Fragment key={`breadcrumb-${segment}-${i}`}>
                           <BreadcrumbItem
                             className="cursor-pointer"
                             onClick={() => handleBreadcrumbClick(i)}>
@@ -428,7 +428,7 @@ export function FileManager() {
                     handleItemClick(item);
                   }
                 }}
-                role="button"
+                role="listitem"
                 tabIndex={0}>
                 <div className="flex min-w-0 items-center space-x-4">
                   <Checkbox
@@ -517,7 +517,7 @@ export function FileManager() {
             <SheetHeader>
               <SheetTitle>File Details</SheetTitle>
             </SheetHeader>
-            <FileDetailContent selectedItem={selectedItem} />
+            <FileDetailContent selectedItem={selectedItem} currentPath={currentPath} />
           </SheetContent>
         </Sheet>
       )}
