@@ -1,7 +1,7 @@
 import { generateMeta } from "@/lib/utils";
 import path from "path";
 import { promises as fs } from "fs";
-import { ChatItemProps, UserPropsTypes } from "./types";
+import type { ChatItemProps, UserPropsTypes } from "./types";
 
 import { ChatSidebar, ChatContent } from "@/app/dashboard/(auth)/communication/chat/components";
 

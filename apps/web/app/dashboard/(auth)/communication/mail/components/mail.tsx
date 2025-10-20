@@ -12,7 +12,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { MailDisplay } from "./mail-display";
 import { MailList } from "./mail-list";
-import { type Mail } from "../data";
+import type { Mail } from "../data";
 import { useMailStore } from "../use-mail";
 import { NavDesktop } from "@/app/dashboard/(auth)/communication/mail/components/nav-desktop";
 import { NavMobile } from "@/app/dashboard/(auth)/communication/mail/components/nav-mobile";
@@ -46,6 +46,7 @@ export function MailComponent({
       <ResizablePanelGroup
         direction="horizontal"
         onLayout={(sizes: number[]) => {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           document.cookie = `react-resizable-panels:layout:mail=${JSON.stringify(sizes)}`;
         }}
         className="items-stretch">
@@ -58,10 +59,12 @@ export function MailComponent({
           maxSize={20}
           onCollapse={() => {
             setIsCollapsed(true);
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             document.cookie = `react-resizable-panels:collapsed=${JSON.stringify(true)}`;
           }}
           onResize={() => {
             setIsCollapsed(false);
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             document.cookie = `react-resizable-panels:collapsed=${JSON.stringify(false)}`;
           }}
           className={cn(isCollapsed && "min-w-[50px] transition-all duration-300 ease-in-out")}>

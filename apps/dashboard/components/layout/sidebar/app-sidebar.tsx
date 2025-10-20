@@ -1,10 +1,7 @@
 "use client";
 
-import * as React from "react";
 import { useEffect } from "react";
 import { ChevronsUpDown, ShoppingBagIcon, UserCircle2Icon } from "lucide-react";
-import { PlusIcon } from "@radix-ui/react-icons";
-import { usePathname } from "next/navigation";
 import { useIsTablet } from "@/hooks/use-mobile";
 import Link from "next/link";
 
@@ -32,7 +29,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const pathname = usePathname();
   const { setOpen, setOpenMobile, isMobile } = useSidebar();
   const isTablet = useIsTablet();
 

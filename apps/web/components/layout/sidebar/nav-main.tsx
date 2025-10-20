@@ -14,7 +14,6 @@ import {
   useSidebar
 } from "@/components/ui/sidebar";
 import {
-  ActivityIcon,
   ArchiveRestoreIcon,
   BadgeDollarSignIcon,
   BrainCircuitIcon,

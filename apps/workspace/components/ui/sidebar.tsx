@@ -69,6 +69,7 @@ const SidebarProvider = React.forwardRef<
       // This sets the cookie to keep the sidebar state.
       if (typeof document !== 'undefined') {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         document.cookie = `${SIDEBAR_COOKIE_NAME}=${openState}; path=/; max-age=${SIDEBAR_COOKIE_MAX_AGE}`
       }
     },
