@@ -30,7 +30,7 @@ interface MailProps {
   navCollapsedSize: number;
 }
 
-export function Mail({
+export function MailComponent({
   mails,
   defaultLayout = [20, 32, 48],
   defaultCollapsed = false,

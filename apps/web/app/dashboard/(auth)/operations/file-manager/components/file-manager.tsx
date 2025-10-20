@@ -428,7 +428,8 @@ export function FileManager() {
                     handleItemClick(item);
                   }
                 }}
-                role="listitem">
+                role="listitem"
+                tabIndex={0}>
                 <div className="flex min-w-0 items-center space-x-4">
                   <Checkbox
                     defaultChecked={selectedItem?.id === item.id}
