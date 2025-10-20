@@ -34,9 +34,6 @@ echo -e "${BLUE}🌐 Starting Web App...${NC}"
 (cd apps/web && bun run dev > /tmp/web.log 2>&1) &
 WEB_PID=$!
 
-echo -e "${BLUE}💼 Starting Workspace...${NC}"
-(cd apps/workspace && bun run dev > /tmp/workspace.log 2>&1) &
-WORKSPACE_PID=$!
 
 echo -e "${BLUE}🔔 Starting Notifications...${NC}"
 (cd apps/notifications && bun run dev > /tmp/notifications.log 2>&1) &
@@ -44,7 +41,6 @@ NOTIFICATIONS_PID=$!
 
 # Save PIDs
 echo "WEB_PID=$WEB_PID" > /tmp/.dev-pids
-echo "WORKSPACE_PID=$WORKSPACE_PID" >> /tmp/.dev-pids
 echo "NOTIFICATIONS_PID=$NOTIFICATIONS_PID" >> /tmp/.dev-pids
 
 # Wait a bit for services to start
@@ -58,7 +54,6 @@ echo ""
 echo -e "${GREEN}🎉 Development environment ready!${NC}"
 echo "=================================="
 echo -e "${BLUE}📱 Web App:${NC}        http://localhost:3000"
-echo -e "${BLUE}💼 Workspace:${NC}      http://localhost:3001"
 echo -e "${BLUE}🔔 Notifications:${NC}  http://localhost:3002"
 echo ""
 echo -e "${YELLOW}💡 To stop: make down${NC}"

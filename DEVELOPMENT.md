@@ -28,7 +28,6 @@ make dev
 
 ### 3. Pristup Servisima
 - **Web App**: http://localhost:3000
-- **Workspace**: http://localhost:3001  
 - **Notifications**: http://localhost:3002
 - **PostgreSQL**: localhost:5432
 - **Redis**: localhost:6379
@@ -63,7 +62,6 @@ make type-check-all # Type check sve servise
 
 ### Servisi
 - **Web** (port 3000) - Glavna Next.js aplikacija
-- **Workspace** (port 3001) - Workspace management
 - **Notifications** (port 3002) - Notification microservice
 - **PostgreSQL** (port 5432) - Glavna baza podataka
 - **Redis** (port 6379) - Cache i session storage
@@ -72,7 +70,6 @@ make type-check-all # Type check sve servise
 ```
 apps/
 ├── web/              # Glavna Next.js aplikacija
-├── workspace/        # Workspace servis
 ├── notifications/    # Notification servis
 ├── dashboard/        # Dashboard aplikacija
 ├── admin/           # Admin panel

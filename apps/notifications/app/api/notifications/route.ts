@@ -158,15 +158,16 @@ async function sendNotificationThroughChannels(notification: any, channels: stri
           results.push({ channel: 'in_app', success: true })
           break
 
-        case 'email':
+        case 'email': {
           // Get user email (ovo treba implementirati u UserDatabase klasi)
           // Za sada koristimo dummy email
           const userEmail = `user-${notification.userId}@example.com`
           const emailResult = await sendEmailNotification(notification, userEmail)
           results.push({ channel: 'email', ...emailResult })
           break
+        }
 
-        case 'push':
+        case 'push': {
           const deviceTokens = await getDeviceTokensForUser(notification.user_id)
           if (deviceTokens.length > 0) {
             const pushResult = await sendPushNotification(notification, deviceTokens)
@@ -175,11 +176,13 @@ async function sendNotificationThroughChannels(notification: any, channels: stri
             results.push({ channel: 'push', success: false, error: 'No device tokens found' })
           }
           break
+        }
 
-        case 'sms':
+        case 'sms': {
           // SMS implementation would go here
           results.push({ channel: 'sms', success: false, error: 'SMS not implemented yet' })
           break
+        }
       }
     } catch (error) {
       results.push({ 

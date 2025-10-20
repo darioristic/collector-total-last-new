@@ -121,80 +121,80 @@ export function broadcastToAll(notification: any) {
 }
 
 // Redis cache helper funkcije
-export class NotificationCache {
-  private static readonly CACHE_PREFIX = 'notification:'
-  private static readonly USER_PREFIX = 'user_notifications:'
-  private static readonly UNREAD_PREFIX = 'unread_count:'
+export const NotificationCache = {
+  CACHE_PREFIX: 'notification:',
+  USER_PREFIX: 'user_notifications:',
+  UNREAD_PREFIX: 'unread_count:',
 
   // Cache notifikaciju
-  static async cacheNotification(notification: any) {
-    const key = `${this.CACHE_PREFIX}${notification.id}`
+  async cacheNotification(notification: any) {
+    const key = `${NotificationCache.CACHE_PREFIX}${notification.id}`
     await redis.setex(key, 3600, JSON.stringify(notification)) // 1 sat cache
-  }
+  },
 
   // Dohvati notifikaciju iz cache-a
-  static async getCachedNotification(id: string) {
-    const key = `${this.CACHE_PREFIX}${id}`
+  async getCachedNotification(id: string) {
+    const key = `${NotificationCache.CACHE_PREFIX}${id}`
     const cached = await redis.get(key)
     return cached ? JSON.parse(cached) : null
-  }
+  },
 
   // Cache korisničke notifikacije
-  static async cacheUserNotifications(userId: string, notifications: any[]) {
-    const key = `${this.USER_PREFIX}${userId}`
+  async cacheUserNotifications(userId: string, notifications: any[]) {
+    const key = `${NotificationCache.USER_PREFIX}${userId}`
     await redis.setex(key, 300, JSON.stringify(notifications)) // 5 minuta cache
-  }
+  },
 
   // Dohvati korisničke notifikacije iz cache-a
-  static async getCachedUserNotifications(userId: string) {
-    const key = `${this.USER_PREFIX}${userId}`
+  async getCachedUserNotifications(userId: string) {
+    const key = `${NotificationCache.USER_PREFIX}${userId}`
     const cached = await redis.get(key)
     return cached ? JSON.parse(cached) : null
-  }
+  },
 
   // Cache broj nepročitanih notifikacija
-  static async cacheUnreadCount(userId: string, count: number) {
-    const key = `${this.UNREAD_PREFIX}${userId}`
+  async cacheUnreadCount(userId: string, count: number) {
+    const key = `${NotificationCache.UNREAD_PREFIX}${userId}`
     await redis.setex(key, 60, count.toString()) // 1 minuta cache
-  }
+  },
 
   // Dohvati broj nepročitanih notifikacija iz cache-a
-  static async getCachedUnreadCount(userId: string): Promise<number | null> {
-    const key = `${this.UNREAD_PREFIX}${userId}`
+  async getCachedUnreadCount(userId: string): Promise<number | null> {
+    const key = `${NotificationCache.UNREAD_PREFIX}${userId}`
     const cached = await redis.get(key)
     return cached ? parseInt(cached) : null
-  }
+  },
 
   // Invalidiraj cache za korisnika
-  static async invalidateUserCache(userId: string) {
+  async invalidateUserCache(userId: string) {
     const keys = [
-      `${this.USER_PREFIX}${userId}`,
-      `${this.UNREAD_PREFIX}${userId}`
+      `${NotificationCache.USER_PREFIX}${userId}`,
+      `${NotificationCache.UNREAD_PREFIX}${userId}`
     ]
     await redis.del(...keys)
-  }
+  },
 
   // Invalidiraj cache za notifikaciju
-  static async invalidateNotificationCache(notificationId: string) {
-    const key = `${this.CACHE_PREFIX}${notificationId}`
+  async invalidateNotificationCache(notificationId: string) {
+    const key = `${NotificationCache.CACHE_PREFIX}${notificationId}`
     await redis.del(key)
-  }
+  },
 }
 
 // Redis pub/sub za real-time notifikacije
-export class NotificationPublisher {
-  private static readonly CHANNEL = 'notifications'
+export const NotificationPublisher = {
+  CHANNEL: 'notifications',
 
   // Publikuj notifikaciju
-  static async publishNotification(notification: any) {
-    await redis.publish(this.CHANNEL, JSON.stringify(notification))
-  }
+  async publishNotification(notification: any) {
+    await redis.publish(NotificationPublisher.CHANNEL, JSON.stringify(notification))
+  },
 
   // Publikuj bulk notifikacije
-  static async publishBulkNotifications(notifications: any[]) {
+  async publishBulkNotifications(notifications: any[]) {
     const pipeline = redis.pipeline()
     notifications.forEach(notification => {
-      pipeline.publish(this.CHANNEL, JSON.stringify(notification))
+      pipeline.publish(NotificationPublisher.CHANNEL, JSON.stringify(notification))
     })
     await pipeline.exec()
   }

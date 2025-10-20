@@ -11,9 +11,9 @@ process.on('beforeExit', async () => {
 })
 
 // Database helper funkcije
-export class NotificationDatabase {
+export const NotificationDatabase = {
   // Kreiraj notifikaciju
-  static async createNotification(data: {
+  async createNotification(data: {
     userId: string
     title: string
     message: string
@@ -35,10 +35,10 @@ export class NotificationDatabase {
         expiresAt: data.expiresAt,
       }
     })
-  }
+  },
 
   // Dohvati notifikacije za korisnika
-  static async getUserNotifications(
+  async getUserNotifications(
     userId: string,
     options: {
       limit?: number
@@ -59,28 +59,28 @@ export class NotificationDatabase {
       take: limit,
       skip: offset,
     })
-  }
+  },
 
   // Dohvati broj nepročitanih notifikacija
-  static async getUnreadCount(userId: string): Promise<number> {
+  async getUnreadCount(userId: string): Promise<number> {
     return await prisma.notification.count({
       where: {
         userId,
         readAt: null
       }
     })
-  }
+  },
 
   // Označi notifikaciju kao pročitanu
-  static async markAsRead(notificationId: string) {
+  async markAsRead(notificationId: string) {
     return await prisma.notification.update({
       where: { id: notificationId },
       data: { readAt: new Date() }
     })
-  }
+  },
 
   // Označi sve notifikacije kao pročitane
-  static async markAllAsRead(userId: string) {
+  async markAllAsRead(userId: string) {
     return await prisma.notification.updateMany({
       where: {
         userId,
@@ -88,31 +88,31 @@ export class NotificationDatabase {
       },
       data: { readAt: new Date() }
     })
-  }
+  },
 
   // Dohvati notifikaciju po ID
-  static async getNotificationById(id: string) {
+  async getNotificationById(id: string) {
     return await prisma.notification.findUnique({
       where: { id }
     })
-  }
+  },
 
   // Obriši notifikaciju
-  static async deleteNotification(id: string) {
+  async deleteNotification(id: string) {
     return await prisma.notification.delete({
       where: { id }
     })
-  }
+  },
 
   // Dohvati preferencije korisnika
-  static async getUserPreferences(userId: string) {
+  async getUserPreferences(userId: string) {
     return await prisma.notificationPreferences.findUnique({
       where: { userId }
     })
-  }
+  },
 
   // Kreiraj ili ažuriraj preferencije
-  static async upsertUserPreferences(
+  async upsertUserPreferences(
     userId: string,
     preferences: {
       emailEnabled?: boolean
@@ -134,10 +134,10 @@ export class NotificationDatabase {
         ...preferences
       }
     })
-  }
+  },
 
   // Dohvati device tokeni za korisnika
-  static async getUserDeviceTokens(userId: string): Promise<string[]> {
+  async getUserDeviceTokens(userId: string): Promise<string[]> {
     const devices = await prisma.userDevice.findMany({
       where: {
         userId,
@@ -150,7 +150,7 @@ export class NotificationDatabase {
   }
 
   // Registruj device token
-  static async registerDeviceToken(
+  async registerDeviceToken(
     userId: string,
     deviceToken: string,
     deviceType: string
@@ -177,7 +177,7 @@ export class NotificationDatabase {
   }
 
   // Deaktiviraj device token
-  static async deactivateDeviceToken(userId: string, deviceToken: string) {
+  async deactivateDeviceToken(userId: string, deviceToken: string) {
     return await prisma.userDevice.update({
       where: {
         userId_deviceToken: {

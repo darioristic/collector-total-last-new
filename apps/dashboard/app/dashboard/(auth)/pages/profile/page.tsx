@@ -1,4 +1,3 @@
-import React from "react";
 import Link from "next/link";
 import { Settings } from "lucide-react";
 import { CompleteYourProfileCard } from "./complete-your-profile";

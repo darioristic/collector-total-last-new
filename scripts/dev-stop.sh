@@ -22,6 +22,6 @@ docker-compose -f docker-compose.dev.yml down
 
 # Clean up
 rm -f /tmp/.dev-pids
-rm -f /tmp/web.log /tmp/workspace.log /tmp/notifications.log
+rm -f /tmp/web.log /tmp/notifications.log
 
 echo -e "${GREEN}✅ All services stopped!${NC}"

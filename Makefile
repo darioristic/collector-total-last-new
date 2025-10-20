@@ -83,9 +83,6 @@ web-logs:
 	@echo "Showing web service logs..."
 	docker-compose logs -f web
 
-workspace-logs:
-	@echo "Showing workspace service logs..."
-	docker-compose logs -f workspace
 
 notifications-logs:
 	@echo "Showing notifications service logs..."
@@ -119,11 +116,9 @@ db-migrate-dev:
 lint-all:
 	@echo "Running linter on all services..."
 	cd apps/web && bun run lint
-	cd apps/workspace && bun run lint
 	cd apps/notifications && bun run lint
 
 type-check-all:
 	@echo "Running type check on all services..."
 	cd apps/web && bun run type-check
-	cd apps/workspace && bun run type-check
 	cd apps/notifications && bun run type-check

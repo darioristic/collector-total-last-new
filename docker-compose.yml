@@ -42,32 +42,14 @@ services:
       - NEXTAUTH_URL=http://localhost:3000
       - NEXTAUTH_SECRET=your-nextauth-secret-here
       - JWT_SECRET=your-super-secret-jwt-key-here
-      - WORKSPACE_URL=http://workspace:3001
       - NOTIFICATIONS_URL=http://notifications:3002
     depends_on:
       - postgres
       - redis
-      - workspace
       - notifications
     networks:
       - collector-network
 
-  workspace:
-    build:
-      context: .
-      dockerfile: Dockerfile.workspace
-    container_name: collector-workspace
-    restart: unless-stopped
-    ports:
-      - "3001:3001"
-    environment:
-      - DATABASE_URL=postgresql://collector_user:collector_password@postgres:5432/collector_db
-      - REDIS_URL=redis://redis:6379
-    depends_on:
-      - postgres
-      - redis
-    networks:
-      - collector-network
 
   notifications:
     build:

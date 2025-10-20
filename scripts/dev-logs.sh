@@ -27,7 +27,6 @@ check_service() {
 
 echo -e "${BLUE}📱 Services Status:${NC}"
 check_service 3000 "Web App"
-check_service 3001 "Workspace"
 check_service 3002 "Notifications"
 check_service 5432 "PostgreSQL"
 check_service 6379 "Redis"
@@ -39,5 +38,4 @@ ps aux | grep -E "(next|bun)" | grep -v grep | head -5
 echo ""
 echo -e "${YELLOW}💡 To see live logs:${NC}"
 echo "  tail -f /tmp/web.log"
-echo "  tail -f /tmp/workspace.log"
 echo "  tail -f /tmp/notifications.log"

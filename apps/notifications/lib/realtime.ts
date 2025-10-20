@@ -2,13 +2,13 @@ import { supabaseClient } from './supabase'
 import { Notification } from './types'
 
 export class NotificationRealtime {
-  private subscriptions: Map<string, any> = new Map()
+  private subscriptions: Map<string, unknown> = new Map()
 
   // Subscribe to notifications for a specific user
   subscribeToUserNotifications(
     userId: string, 
     onNotification: (notification: Notification) => void,
-    onError?: (error: any) => void
+    onError?: (error: Error) => void
   ) {
     const subscription = supabaseClient
       .channel(`notifications:${userId}`)
@@ -55,7 +55,7 @@ export class NotificationRealtime {
   subscribeToNotificationCount(
     userId: string,
     onCountChange: (count: number) => void,
-    onError?: (error: any) => void
+    onError?: (error: Error) => void
   ) {
     const subscription = supabaseClient
       .channel(`notification_count:${userId}`)

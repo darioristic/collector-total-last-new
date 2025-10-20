@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server'
+import type { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import { NotificationDatabase } from '@/lib/database'
-import { NotificationPreferences } from '@/lib/types'
+import type { NotificationPreferences } from '@/lib/types'
 
 const preferencesSchema = z.object({
   user_id: z.string().uuid(),
