@@ -1,11 +1,12 @@
 import { redirect } from "next/navigation";
 
 interface AIChatV2IdPageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
-export default function AIChatV2IdPage({ params }: AIChatV2IdPageProps) {
-  redirect(`/dashboard/communication/ai-chat/${params.id}`);
+export default async function AIChatV2IdPage({ params }: AIChatV2IdPageProps) {
+  const { id } = await params;
+  redirect(`/dashboard/communication/ai-chat/${id}`);
 }

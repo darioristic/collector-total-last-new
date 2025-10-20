@@ -51,7 +51,7 @@ export default function CustomersPage() {
     try {
       setLoading(true);
       
-      const response = await authenticatedFetch('/api/crm/customers', {}, token);
+      const response = await authenticatedFetch('/api/crm/customers', {}, token!);
       const data = await response.json();
 
       if (data.success) {

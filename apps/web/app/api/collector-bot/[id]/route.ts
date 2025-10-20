@@ -4,10 +4,11 @@ import { collectorBot } from '@/lib/collector-bot';
 // PUT /api/collector-bot/[id] - Označi notifikaciju kao pročitanu
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    collectorBot.markAsRead(params.id);
+    const { id } = await params;
+    collectorBot.markAsRead(id);
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Error marking notification as read:', error);

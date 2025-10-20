@@ -17,9 +17,10 @@ const updateCustomerSchema = z.object({
 // GET /api/crm/customers/[id] - Get customer by ID
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const authHeader = request.headers.get('authorization');
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -33,7 +34,7 @@ export async function GET(
 
     const customer = await prisma.customer.findFirst({
       where: {
-        id: params.id,
+        id,
         organizationId: payload.organizationId
       },
       include: {
@@ -95,9 +96,10 @@ export async function GET(
 // PUT /api/crm/customers/[id] - Update customer
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const authHeader = request.headers.get('authorization');
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -115,7 +117,7 @@ export async function PUT(
     // Check if customer exists and belongs to organization
     const existingCustomer = await prisma.customer.findFirst({
       where: {
-        id: params.id,
+        id,
         organizationId: payload.organizationId
       }
     });
@@ -133,7 +135,7 @@ export async function PUT(
         where: {
           email: validatedData.email,
           organizationId: payload.organizationId,
-          id: { not: params.id }
+          id: { not: id }
         }
       });
 
@@ -146,7 +148,7 @@ export async function PUT(
     }
 
     const customer = await prisma.customer.update({
-      where: { id: params.id },
+      where: { id },
       data: validatedData,
       include: {
         assignedTo: {
@@ -169,7 +171,7 @@ export async function PUT(
     
     if (error instanceof z.ZodError) {
       return NextResponse.json(
-        { error: 'Validation error', details: error.errors },
+        { error: 'Validation error', details: error.issues },
         { status: 400 }
       );
     }
@@ -184,9 +186,10 @@ export async function PUT(
 // DELETE /api/crm/customers/[id] - Delete customer
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const authHeader = request.headers.get('authorization');
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -201,7 +204,7 @@ export async function DELETE(
     // Check if customer exists and belongs to organization
     const existingCustomer = await prisma.customer.findFirst({
       where: {
-        id: params.id,
+        id,
         organizationId: payload.organizationId
       }
     });
@@ -216,10 +219,10 @@ export async function DELETE(
     // Check if customer has associated leads or invoices
     const [leadsCount, invoicesCount] = await Promise.all([
       prisma.lead.count({
-        where: { customerId: params.id }
+        where: { customerId: id }
       }),
       prisma.invoice.count({
-        where: { customerId: params.id }
+        where: { customerId: id }
       })
     ]);
 
@@ -237,7 +240,7 @@ export async function DELETE(
     }
 
     await prisma.customer.delete({
-      where: { id: params.id }
+      where: { id }
     });
 
     return NextResponse.json({

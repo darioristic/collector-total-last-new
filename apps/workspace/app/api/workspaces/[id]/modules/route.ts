@@ -5,11 +5,12 @@ const prisma = new PrismaClient();
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const modules = await prisma.workspaceModule.findMany({
-      where: { workspaceId: params.id },
+      where: { workspaceId: id },
       orderBy: {
         moduleName: "asc",
       },
@@ -27,9 +28,10 @@ export async function GET(
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const body = await request.json();
     const { moduleName, isEnabled, config } = body;
 
@@ -43,7 +45,7 @@ export async function POST(
     const workspaceModule = await prisma.workspaceModule.upsert({
       where: {
         workspaceId_moduleName: {
-          workspaceId: params.id,
+          workspaceId: id,
           moduleName,
         },
       },
@@ -52,7 +54,7 @@ export async function POST(
         config,
       },
       create: {
-        workspaceId: params.id,
+        workspaceId: id,
         moduleName,
         isEnabled,
         config,

@@ -56,7 +56,7 @@ export default function LeadsPage() {
     try {
       setLoading(true);
       
-      const response = await authenticatedFetch('/api/crm/leads', {}, token);
+      const response = await authenticatedFetch('/api/crm/leads', {}, token!);
       const data = await response.json();
 
       if (data.success) {

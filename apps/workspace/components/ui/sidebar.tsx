@@ -246,7 +246,7 @@ const SidebarTrigger = React.forwardRef<
       }}
       {...props}
     >
-      <PanelLeft />
+      {React.createElement(PanelLeft as React.ComponentType<React.SVGProps<SVGSVGElement>>)}
       <span className="sr-only">Toggle Sidebar</span>
     </Button>
   )

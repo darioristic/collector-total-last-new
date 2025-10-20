@@ -162,8 +162,8 @@ export async function POST(request: NextRequest) {
     const lead = await prisma.lead.create({
       data: {
         ...validatedData,
-        organizationId: payload.organizationId,
-        assignedToId: validatedData.assignedToId || payload.userId
+        organizationId: payload.organizationId!,
+        assignedToId: validatedData.assignedToId || payload.userId!
       },
       include: {
         assignedTo: {
@@ -194,7 +194,7 @@ export async function POST(request: NextRequest) {
     
     if (error instanceof z.ZodError) {
       return NextResponse.json(
-        { error: 'Validation error', details: error.errors },
+        { error: 'Validation error', details: error.issues },
         { status: 400 }
       );
     }

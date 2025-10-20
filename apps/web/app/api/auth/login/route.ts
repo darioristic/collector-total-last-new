@@ -30,11 +30,11 @@ export async function POST(request: NextRequest) {
     console.error('Login API error:', error);
     
     if (error instanceof z.ZodError) {
-      console.log('Validation error:', error.errors);
+      console.log('Validation error:', error.issues);
       return NextResponse.json({
         success: false,
         error: 'Validation error',
-        details: error.errors
+        details: error.issues
       }, { status: 400 });
     }
     

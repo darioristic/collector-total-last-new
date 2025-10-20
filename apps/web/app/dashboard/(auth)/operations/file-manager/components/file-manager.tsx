@@ -43,6 +43,73 @@ import FileManagerPagination from "@/app/dashboard/(auth)/operations/file-manage
 
 type FileItem = (typeof allFileItems)[number];
 
+const FileDetailContent = ({ selectedItem, currentPath }: { selectedItem: FileItem; currentPath: string }) => {
+  return (
+    <div className="space-y-6 px-4">
+      <div className="flex flex-col items-center space-y-8 py-4">
+        <div className="flex items-center">
+          <div className="scale-[3]">{getFileIcon(selectedItem.icon)}</div>
+        </div>
+        <h2 className="text-foreground text-center">{selectedItem.name}</h2>
+      </div>
+
+      <div>
+        <h3 className="text-foreground mb-4 text-xs font-semibold tracking-wider uppercase">
+          Info
+        </h3>
+        <div className="space-y-3">
+          <div className="flex justify-between">
+            <span className="text-muted-foreground text-sm">Type</span>
+            <span className="text-foreground text-sm capitalize">{selectedItem.type}</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-muted-foreground text-sm">Size</span>
+            <span className="text-foreground text-sm">{selectedItem.size}</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-muted-foreground text-sm">Owner</span>
+            <span className="text-foreground text-sm">ArtTemplate</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-muted-foreground text-sm">Location</span>
+            <span className="text-sm">
+              {currentPath ? `My Files/${currentPath}` : "My Files"}
+            </span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-muted-foreground text-sm">Modified</span>
+            <span className="text-foreground text-sm">Sep 17, 2020 4:25</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-muted-foreground text-sm">Created</span>
+            <span className="text-foreground text-sm">Sep 10, 2020 2:25</span>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <h3 className="text-foreground mb-4 text-xs font-semibold tracking-wider uppercase">
+          Settings
+        </h3>
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <span className="text-foreground text-sm">File Sharing</span>
+            <Switch checked={true} />
+          </div>
+          <div className="flex items-center justify-between">
+            <span className="text-foreground text-sm">Backup</span>
+            <Switch />
+          </div>
+          <div className="flex items-center justify-between">
+            <span className="text-foreground text-sm">Sync</span>
+            <Switch />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 function getFileIcon(iconType: string) {
   switch (iconType) {
     case "folder":
@@ -230,72 +297,6 @@ export function FileManager() {
     setSelectedItems(newSelectedItems);
   };
 
-  const FileDetailContent = ({ selectedItem }: { selectedItem: FileItem }) => {
-    return (
-      <div className="space-y-6 px-4">
-        <div className="flex flex-col items-center space-y-8 py-4">
-          <div className="flex items-center">
-            <div className="scale-[3]">{getFileIcon(selectedItem.icon)}</div>
-          </div>
-          <h2 className="text-foreground text-center">{selectedItem.name}</h2>
-        </div>
-
-        <div>
-          <h3 className="text-foreground mb-4 text-xs font-semibold tracking-wider uppercase">
-            Info
-          </h3>
-          <div className="space-y-3">
-            <div className="flex justify-between">
-              <span className="text-muted-foreground text-sm">Type</span>
-              <span className="text-foreground text-sm capitalize">{selectedItem.type}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-muted-foreground text-sm">Size</span>
-              <span className="text-foreground text-sm">{selectedItem.size}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-muted-foreground text-sm">Owner</span>
-              <span className="text-foreground text-sm">ArtTemplate</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-muted-foreground text-sm">Location</span>
-              <span className="text-sm">
-                {currentPath ? `My Files/${currentPath}` : "My Files"}
-              </span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-muted-foreground text-sm">Modified</span>
-              <span className="text-foreground text-sm">Sep 17, 2020 4:25</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-muted-foreground text-sm">Created</span>
-              <span className="text-foreground text-sm">Sep 10, 2020 2:25</span>
-            </div>
-          </div>
-        </div>
-
-        <div>
-          <h3 className="text-foreground mb-4 text-xs font-semibold tracking-wider uppercase">
-            Settings
-          </h3>
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <span className="text-foreground text-sm">File Sharing</span>
-              <Switch checked={true} />
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-foreground text-sm">Backup</span>
-              <Switch />
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-foreground text-sm">Sync</span>
-              <Switch />
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  };
 
   return (
     <div className="flex">
@@ -320,7 +321,7 @@ export function FileManager() {
                       </BreadcrumbItem>
                       <BreadcrumbSeparator />
                       {pathSegments.map((segment, i) => (
-                        <React.Fragment key={i}>
+                        <React.Fragment key={`${segment}-${i}`}>
                           <BreadcrumbItem
                             className="cursor-pointer"
                             onClick={() => handleBreadcrumbClick(i)}>
@@ -420,7 +421,15 @@ export function FileManager() {
                   "hover:bg-muted flex cursor-pointer items-center justify-between border-b p-2 lg:p-4",
                   selectedItem?.id === item.id && "bg-muted"
                 )}
-                onClick={() => handleItemClick(item)}>
+                onClick={() => handleItemClick(item)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    handleItemClick(item);
+                  }
+                }}
+                role="button"
+                tabIndex={0}>
                 <div className="flex min-w-0 items-center space-x-4">
                   <Checkbox
                     defaultChecked={selectedItem?.id === item.id}
@@ -479,7 +488,7 @@ export function FileManager() {
               </div>
             )}
 
-            {pathSegments.length == 0 && (
+            {pathSegments.length === 0 && (
               <div className="mt-4">
                 <FileManagerPagination />
               </div>
@@ -496,7 +505,7 @@ export function FileManager() {
                 className="absolute top-2 right-0">
                 <XIcon />
               </Button>
-              <FileDetailContent selectedItem={selectedItem} />
+              <FileDetailContent selectedItem={selectedItem} currentPath={currentPath} />
             </div>
           ) : null}
         </div>

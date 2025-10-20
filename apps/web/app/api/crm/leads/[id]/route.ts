@@ -18,9 +18,10 @@ const updateLeadSchema = z.object({
 // GET /api/crm/leads/[id] - Get lead by ID
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const authHeader = request.headers.get('authorization');
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -34,7 +35,7 @@ export async function GET(
 
     const lead = await prisma.lead.findFirst({
       where: {
-        id: params.id,
+        id: id,
         organizationId: payload.organizationId
       },
       include: {
@@ -82,9 +83,10 @@ export async function GET(
 // PUT /api/crm/leads/[id] - Update lead
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const authHeader = request.headers.get('authorization');
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -102,7 +104,7 @@ export async function PUT(
     // Check if lead exists and belongs to organization
     const existingLead = await prisma.lead.findFirst({
       where: {
-        id: params.id,
+        id: id,
         organizationId: payload.organizationId
       }
     });
@@ -120,7 +122,7 @@ export async function PUT(
         where: {
           email: validatedData.email,
           organizationId: payload.organizationId,
-          id: { not: params.id }
+          id: { not: id }
         }
       });
 
@@ -150,7 +152,7 @@ export async function PUT(
     }
 
     const lead = await prisma.lead.update({
-      where: { id: params.id },
+      where: { id: id },
       data: validatedData,
       include: {
         assignedTo: {
@@ -181,7 +183,7 @@ export async function PUT(
     
     if (error instanceof z.ZodError) {
       return NextResponse.json(
-        { error: 'Validation error', details: error.errors },
+        { error: 'Validation error', details: error.issues },
         { status: 400 }
       );
     }
@@ -196,9 +198,10 @@ export async function PUT(
 // DELETE /api/crm/leads/[id] - Delete lead
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const authHeader = request.headers.get('authorization');
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -213,7 +216,7 @@ export async function DELETE(
     // Check if lead exists and belongs to organization
     const existingLead = await prisma.lead.findFirst({
       where: {
-        id: params.id,
+        id: id,
         organizationId: payload.organizationId
       }
     });
@@ -226,7 +229,7 @@ export async function DELETE(
     }
 
     await prisma.lead.delete({
-      where: { id: params.id }
+      where: { id: id }
     });
 
     return NextResponse.json({
