@@ -1,0 +1,122 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Workspace {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  modules     WorkspaceModule[]
+  settings    WorkspaceSettings?
+  users       WorkspaceUser[]
+  logs        WorkspaceLog[]
+
+  @@map("workspaces")
+}
+
+model WorkspaceModule {
+  id          String   @id @default(cuid())
+  workspaceId String
+  moduleName  String
+  isEnabled   Boolean  @default(true)
+  config      Json?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@unique([workspaceId, moduleName])
+  @@map("workspace_modules")
+}
+
+model WorkspaceSettings {
+  id          String   @id @default(cuid())
+  workspaceId String   @unique
+  theme       String   @default("light")
+  language    String   @default("en")
+  timezone    String   @default("UTC")
+  notifications Json?
+  security    Json?
+  integrations Json?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@map("workspace_settings")
+}
+
+model WorkspaceUser {
+  id          String   @id @default(cuid())
+  workspaceId String
+  userId      String
+  role        String   @default("member") // admin, manager, member, viewer
+  permissions Json?
+  isActive    Boolean  @default(true)
+  joinedAt    DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@unique([workspaceId, userId])
+  @@map("workspace_users")
+}
+
+model WorkspaceLog {
+  id          String   @id @default(cuid())
+  workspaceId String
+  userId      String?
+  action      String
+  resource    String?
+  details     Json?
+  ipAddress   String?
+  userAgent   String?
+  createdAt   DateTime @default(now())
+
+  // Relations
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@map("workspace_logs")
+}
+
+model SystemConfig {
+  id          String   @id @default(cuid())
+  key         String   @unique
+  value       Json
+  description String?
+  isPublic    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("system_configs")
+}
+
+model ModuleRegistry {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  version     String
+  description String?
+  isActive    Boolean  @default(true)
+  config      Json?
+  dependencies Json?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("module_registry")
+}

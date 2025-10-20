@@ -1,0 +1,95 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: collector-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: collector_db
+      POSTGRES_USER: collector_user
+      POSTGRES_PASSWORD: collector_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - collector-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: collector-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - collector-network
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.web
+    container_name: collector-web
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_URL=postgresql://collector_user:collector_password@postgres:5432/collector_db
+      - REDIS_URL=redis://redis:6379
+      - NEXTAUTH_URL=http://localhost:3000
+      - NEXTAUTH_SECRET=your-nextauth-secret-here
+      - JWT_SECRET=your-super-secret-jwt-key-here
+      - WORKSPACE_URL=http://workspace:3001
+      - NOTIFICATIONS_URL=http://notifications:3002
+    depends_on:
+      - postgres
+      - redis
+      - workspace
+      - notifications
+    networks:
+      - collector-network
+
+  workspace:
+    build:
+      context: .
+      dockerfile: Dockerfile.workspace
+    container_name: collector-workspace
+    restart: unless-stopped
+    ports:
+      - "3001:3001"
+    environment:
+      - DATABASE_URL=postgresql://collector_user:collector_password@postgres:5432/collector_db
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - collector-network
+
+  notifications:
+    build:
+      context: .
+      dockerfile: Dockerfile.notifications
+    container_name: collector-notifications
+    restart: unless-stopped
+    ports:
+      - "3002:3002"
+    environment:
+      - DATABASE_URL=postgresql://collector_user:collector_password@postgres:5432/collector_db
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - collector-network
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  collector-network:
+    driver: bridge
