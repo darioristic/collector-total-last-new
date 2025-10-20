@@ -84,7 +84,7 @@ export function Mail({
               </TabsList>
             </div>
             <Separator />
-            <div className="bg-background/95 supports-[backdrop-filter]:bg-background/60 p-4 backdrop-blur">
+            <div className="bg-background/95 supports-backdrop-filter:bg-background/60 p-4 backdrop-blur">
               <form>
                 <div className="relative">
                   <Search className="text-muted-foreground absolute top-2.5 left-2 h-4 w-4" />
