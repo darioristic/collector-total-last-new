@@ -19,11 +19,10 @@ export function middleware(request: NextRequest) {
   const authToken = request.cookies.get('auth_token')?.value;
   
   if (pathname.startsWith('/dashboard/')) {
-    // Temporarily disable auth check for testing
-    // if (!authToken) {
-    //   // No token found, redirect to login
-    //   return NextResponse.redirect(new URL("/dashboard/login", request.url));
-    // }
+    if (!authToken) {
+      // No token found, redirect to login
+      return NextResponse.redirect(new URL("/dashboard/login", request.url));
+    }
     // Token found, allow access (we'll verify it on the client side)
     return NextResponse.next();
   }

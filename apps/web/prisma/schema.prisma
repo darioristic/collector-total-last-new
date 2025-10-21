@@ -35,6 +35,10 @@ model User {
   profile                 UserProfile?
   workspace_members       workspace_members[]
   workspaces              workspaces[]
+  offers                  Offer[]
+  orders                  Order[]
+  deliveries              Delivery[]
+  payments                Payment[]
 
   @@map("users")
 }
@@ -73,6 +77,11 @@ model Organization {
   members            OrganizationMember[]
   projects           Project[]
   workspaces         workspaces[]
+  companies          Company[]
+  offers             Offer[]
+  orders             Order[]
+  deliveries         Delivery[]
+  payments           Payment[]
 
   @@map("organizations")
 }
@@ -107,6 +116,8 @@ model Customer {
   organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   invoices       Invoice[]
   leads          Lead[]
+  offers         Offer[]
+  orders         Order[]
 
   @@map("customers")
 }
@@ -365,4 +376,243 @@ model workspaces {
   workspace_members workspace_members[]
   users             User?               @relation(fields: [createdById], references: [id])
   organizations     Organization        @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+}
+
+// Finance Microservices Models
+
+model Company {
+  id              String                @id @default(cuid())
+  organizationId  String
+  name            String
+  taxId           String?               @unique
+  registrationNo  String?
+  address         String?
+  city            String?
+  postalCode      String?
+  country         String                 @default("Serbia")
+  contactEmail    String?
+  contactPhone    String?
+  website         String?
+  isTenant        Boolean                @default(false)
+  createdAt       DateTime              @default(now())
+  updatedAt       DateTime              @updatedAt
+  organization    Organization          @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  bankAccounts    CompanyBankAccount[]
+  offers          Offer[]
+  orders          Order[]
+  invoices        Invoice[]
+
+  @@map("companies")
+}
+
+model CompanyBankAccount {
+  id            String   @id @default(cuid())
+  companyId     String
+  bankName      String
+  accountNumber String
+  currency      String   @default("RSD")
+  isPrimary     Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  company       Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  @@map("company_bank_accounts")
+}
+
+model Offer {
+  id             String       @id @default(cuid())
+  organizationId String
+  offerNo        String       @unique
+  companyId      String
+  customerId     String
+  subtotal       Decimal      @db.Decimal(15, 2)
+  tax            Decimal      @db.Decimal(15, 2) @default(0)
+  total          Decimal      @db.Decimal(15, 2)
+  currency       String       @default("RSD")
+  validUntil     DateTime
+  status         String       @default("draft")
+  createdById    String
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  company        Company      @relation(fields: [companyId], references: [id])
+  customer       Customer     @relation(fields: [customerId], references: [id])
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  createdBy      User         @relation(fields: [createdById], references: [id])
+  items          OfferItem[]
+  orders         Order[]
+  invoices       Invoice[]
+
+  @@map("offers")
+}
+
+model OfferItem {
+  id          String   @id @default(cuid())
+  offerId     String
+  name        String
+  description String?
+  quantity    Decimal  @db.Decimal(10, 3)
+  unitPrice   Decimal  @db.Decimal(15, 2)
+  totalPrice  Decimal  @db.Decimal(15, 2)
+  createdAt   DateTime @default(now())
+  offer       Offer    @relation(fields: [offerId], references: [id], onDelete: Cascade)
+
+  @@map("offer_items")
+}
+
+model Order {
+  id                    String       @id @default(cuid())
+  organizationId        String
+  orderNo               String       @unique
+  offerId               String?
+  companyId             String
+  customerId            String
+  status                String       @default("draft")
+  orderDate             DateTime     @default(now())
+  expectedDeliveryDate  DateTime?
+  createdById           String
+  createdAt             DateTime     @default(now())
+  updatedAt             DateTime     @updatedAt
+  company               Company      @relation(fields: [companyId], references: [id])
+  customer              Customer     @relation(fields: [customerId], references: [id])
+  organization          Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  createdBy             User         @relation(fields: [createdById], references: [id])
+  offer                 Offer?        @relation(fields: [offerId], references: [id])
+  items                 OrderItem[]
+  deliveries            Delivery[]
+  invoices              Invoice[]
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id        String   @id @default(cuid())
+  orderId   String
+  name      String
+  description String?
+  quantity  Decimal  @db.Decimal(10, 3)
+  unitPrice Decimal  @db.Decimal(15, 2)
+  totalPrice Decimal  @db.Decimal(15, 2)
+  createdAt DateTime @default(now())
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@map("order_items")
+}
+
+model Delivery {
+  id              String       @id @default(cuid())
+  organizationId  String
+  deliveryNo      String       @unique
+  orderId         String
+  deliveryDate    DateTime
+  status          String       @default("prepared")
+  deliveryAddress String?
+  contactPerson   String?
+  contactPhone    String?
+  notes           String?
+  createdById     String
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  order           Order        @relation(fields: [orderId], references: [id])
+  organization    Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  createdBy       User         @relation(fields: [createdById], references: [id])
+  items           DeliveryItem[]
+  invoices        Invoice[]
+
+  @@map("deliveries")
+}
+
+model DeliveryItem {
+  id                String   @id @default(cuid())
+  deliveryId        String
+  orderItemId       String
+  quantityDelivered Decimal  @db.Decimal(10, 3)
+  conditionNotes    String?
+  createdAt         DateTime @default(now())
+  delivery          Delivery @relation(fields: [deliveryId], references: [id], onDelete: Cascade)
+
+  @@map("delivery_items")
+}
+
+model Invoice {
+  id             String       @id @default(cuid())
+  organizationId String
+  invoiceNo      String       @unique
+  companyId      String
+  customerId     String
+  offerId        String?
+  orderId        String?
+  deliveryId     String?
+  invoiceType    String       @default("issued")
+  subtotal       Decimal      @db.Decimal(15, 2)
+  tax            Decimal      @db.Decimal(15, 2) @default(0)
+  total          Decimal      @db.Decimal(15, 2)
+  currency       String       @default("RSD")
+  issueDate      DateTime
+  dueDate        DateTime
+  status         String       @default("draft")
+  pdfPath        String?
+  qrCode         String?
+  createdById    String
+  createdAt       DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  company        Company      @relation(fields: [companyId], references: [id])
+  customer       Customer     @relation(fields: [customerId], references: [id])
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  createdBy      User         @relation(fields: [createdById], references: [id])
+  offer          Offer?       @relation(fields: [offerId], references: [id])
+  order          Order?       @relation(fields: [orderId], references: [id])
+  delivery       Delivery?    @relation(fields: [deliveryId], references: [id])
+  items          InvoiceItem[]
+  payments       Payment[]
+
+  @@map("invoices")
+}
+
+model InvoiceItem {
+  id          String   @id @default(cuid())
+  invoiceId   String
+  name        String
+  description String?
+  quantity    Decimal  @db.Decimal(10, 3)
+  unitPrice   Decimal  @db.Decimal(15, 2)
+  totalPrice  Decimal  @db.Decimal(15, 2)
+  taxRate     Decimal  @db.Decimal(5, 2) @default(0)
+  createdAt   DateTime @default(now())
+  invoice     Invoice  @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+
+  @@map("invoice_items")
+}
+
+model Payment {
+  id              String       @id @default(cuid())
+  organizationId  String
+  invoiceId       String
+  paymentMethod   String
+  amount          Decimal      @db.Decimal(15, 2)
+  currency        String       @default("RSD")
+  paymentDate     DateTime
+  referenceNumber String?
+  status          String       @default("pending")
+  gatewayResponse Json?
+  createdById     String
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  invoice         Invoice      @relation(fields: [invoiceId], references: [id])
+  organization    Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  createdBy       User         @relation(fields: [createdById], references: [id])
+  refunds         PaymentRefund[]
+
+  @@map("payments")
+}
+
+model PaymentRefund {
+  id          String   @id @default(cuid())
+  paymentId   String
+  amount      Decimal  @db.Decimal(15, 2)
+  reason      String?
+  status      String   @default("pending")
+  processedAt DateTime?
+  createdAt   DateTime @default(now())
+  payment     Payment  @relation(fields: [paymentId], references: [id], onDelete: Cascade)
+
+  @@map("payment_refunds")
 }
