@@ -33,7 +33,7 @@ export default function LoginPage() {
       console.log('Login successful, redirecting...');
       
       // Force page reload to ensure middleware recognizes the new cookie
-      window.location.href = '/dashboard/default';
+      window.location.href = '/dashboard/sales';
     } catch (err) {
       console.error('Login error:', err);
       const errorMessage = err instanceof Error ? err.message : 'Login failed';

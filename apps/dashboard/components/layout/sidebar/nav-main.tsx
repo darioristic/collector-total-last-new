@@ -88,7 +88,7 @@ export const navItems: NavGroup[] = [
     items: [
       {
         title: "Default",
-        href: "/dashboard/default",
+        href: "/dashboard/sales",
         icon: ChartPieIcon
       },
       {

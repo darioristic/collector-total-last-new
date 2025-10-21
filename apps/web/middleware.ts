@@ -29,7 +29,7 @@ export function middleware(request: NextRequest) {
   
   // Redirect root to dashboard
   if (pathname === '/') {
-    return NextResponse.redirect(new URL("/dashboard/default", request.url));
+    return NextResponse.redirect(new URL("/dashboard/sales", request.url));
   }
   
   return NextResponse.next();

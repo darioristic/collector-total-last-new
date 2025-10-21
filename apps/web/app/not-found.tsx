@@ -28,7 +28,7 @@ export default function NotFound() {
         </p>
         <div className="mt-10 flex items-center justify-center gap-x-2">
           <Button size="lg" asChild>
-            <Link href={isLoggedIn ? "/dashboard/default" : "/dashboard/login"}>
+            <Link href={isLoggedIn ? "/dashboard/sales" : "/dashboard/login"}>
               Go back home
             </Link>
           </Button>
