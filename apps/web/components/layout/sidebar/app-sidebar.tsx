@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { ChevronsUpDown, ShoppingBagIcon, UserCircle2Icon } from "lucide-react";
 import { PlusIcon } from "@radix-ui/react-icons";
 import { useIsTablet } from "@/hooks/use-mobile";
+import { useAuth } from "@/hooks/use-auth";
 
 import {
   Sidebar,
@@ -32,6 +33,8 @@ import { Button } from "@/components/ui/button";
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { setOpen, setOpenMobile, isMobile } = useSidebar();
   const isTablet = useIsTablet();
+  const { user } = useAuth();
+  const [workspaceName, setWorkspaceName] = useState("Collector CRM");
 
   useEffect(() => {
     if (isMobile) setOpenMobile(false);
@@ -40,6 +43,42 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   useEffect(() => {
     setOpen(!isTablet);
   }, [isTablet, setOpen]);
+
+  // Fetch workspace name when user changes
+  useEffect(() => {
+    if (user?.organization?.name) {
+      setWorkspaceName(user.organization.name);
+    }
+  }, [user]);
+
+  // Listen for workspace updates
+  useEffect(() => {
+    const handleWorkspaceUpdate = () => {
+      // Refresh workspace data
+      const token = localStorage.getItem('auth_token');
+      if (token) {
+        fetch('/api/workspace', {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data.success && data.data?.name) {
+            setWorkspaceName(data.data.name);
+          }
+        })
+        .catch(err => console.error('Failed to fetch workspace:', err));
+      }
+    };
+
+    // Listen for custom workspace update events
+    window.addEventListener('workspaceUpdated', handleWorkspaceUpdate);
+    
+    return () => {
+      window.removeEventListener('workspaceUpdated', handleWorkspaceUpdate);
+    };
+  }, []);
 
   return (
     <Sidebar collapsible="icon" {...props}>
@@ -50,7 +89,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               <DropdownMenuTrigger asChild>
                 <SidebarMenuButton className="hover:text-foreground h-10 group-data-[collapsible=icon]:px-0! hover:bg-primary/5">
                   <Logo />
-                  <span className="font-semibold">Shadcn UI Kit</span>
+                  <span className="font-semibold">{workspaceName}</span>
                   <ChevronsUpDown className="ml-auto group-data-[collapsible=icon]:hidden" />
                 </SidebarMenuButton>
               </DropdownMenuTrigger>

@@ -7,7 +7,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return generateMeta({
     title: "Social Media App",
     description:
-      "Social media app is a ui template used to connect, share and interact with users online. Built with shadcn/ui, Tailwind CSS, Next.js and React.",
+      "Social media app is a ui template used to connect, share and interact with users online. Built with Collector CRM, Tailwind CSS, Next.js and React.",
     canonical: "/courses"
   });
 }

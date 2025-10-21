@@ -18,7 +18,7 @@ export async function generateMetadata() {
   return generateMeta({
     title: "Admin Dashboard",
     description:
-      "The admin dashboard template offers a sleek and efficient interface for monitoring important data and user interactions. Built with shadcn/ui.",
+      "The admin dashboard template offers a sleek and efficient interface for monitoring important data and user interactions. Built with Collector CRM.",
     canonical: "/default"
   });
 }

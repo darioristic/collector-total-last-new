@@ -15,7 +15,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return generateMeta({
     title: "Project List",
     description:
-      "A projects list is an organized overview of projects with key details and statuses. Built with shadcn/ui, Tailwind CSS, Next.js and React. Includes TypeScript.",
+      "A projects list is an organized overview of projects with key details and statuses. Built with Collector CRM, Tailwind CSS, Next.js and React. Includes TypeScript.",
     canonical: "/project-list"
   });
 }

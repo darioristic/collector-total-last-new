@@ -15,7 +15,7 @@ export async function generateMetadata() {
   return generateMeta({
     title: "Academy Admin Dashboard",
     description:
-      "Admin dashboard template for schools and educational institutions. Built with shadcn/ui, Tailwind CSS, Next.js.",
+      "Admin dashboard template for schools and educational institutions. Built with Collector CRM, Tailwind CSS, Next.js.",
     canonical: "/academy"
   });
 }

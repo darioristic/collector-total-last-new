@@ -1,6 +1,6 @@
-# Shadcn UI Kit
+# Collector CRM
 
-A large collection of admin dashboards, website templates, UI components, and ready-to-use blocks. Save time and deliver projects faster.
+A comprehensive CRM and ERP solution built with modern web technologies. Manage your business operations efficiently with our powerful dashboard.
 
 This is a [Next.js 15](https://nextjs.org/) project bootstrapped with [create-next-app](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) and React 19.
 
@@ -11,8 +11,8 @@ Follow these steps to get your project up and running locally:
 1. Clone the repository:
 
     ```sh
-    git clone https://github.com/bundui/shadcn-ui-kit-dashboard.git
-    cd shadcn-ui-kit-dashboard
+    git clone https://github.com/your-org/collector-crm.git
+    cd collector-crm
     ```
 
 2. Install dependencies:

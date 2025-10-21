@@ -26,7 +26,11 @@ async function main() {
   // Super Admin
   const superAdmin = await prisma.user.upsert({
     where: { email: 'admin@crm.com' },
-    update: {},
+    update: {
+      name: 'Super Admin',
+      role: 'SUPER_ADMIN',
+      isActive: true
+    },
     create: {
       email: 'admin@crm.com',
       name: 'Super Admin',
@@ -39,7 +43,11 @@ async function main() {
   // Admin
   const admin = await prisma.user.upsert({
     where: { email: 'manager@collector-test.com' },
-    update: {},
+    update: {
+      name: 'John Manager',
+      role: 'ADMIN',
+      isActive: true
+    },
     create: {
       email: 'manager@collector-test.com',
       name: 'John Manager',
@@ -52,7 +60,11 @@ async function main() {
   // Employee
   const employee = await prisma.user.upsert({
     where: { email: 'employee@collector-test.com' },
-    update: {},
+    update: {
+      name: 'Jane Employee',
+      role: 'EMPLOYEE',
+      isActive: true
+    },
     create: {
       email: 'employee@collector-test.com',
       name: 'Jane Employee',

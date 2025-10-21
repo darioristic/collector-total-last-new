@@ -7,7 +7,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return generateMeta({
     title: "Text to Speech",
     description:
-      "Text to speech app is a ui template that converts written text into spoken audio. Built with shadcn/ui, Tailwind CSS, Next.js and React.",
+      "Text to speech app is a ui template that converts written text into spoken audio. Built with Collector CRM, Tailwind CSS, Next.js and React.",
     canonical: "/text-to-speech"
   });
 }

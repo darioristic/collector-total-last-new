@@ -1,11 +1,13 @@
+import type { Server as HttpServer } from 'node:http'
 import Redis from 'ioredis'
-import { WebSocketServer } from 'ws'
-import { WebSocket } from 'ws'
+import { WebSocket, WebSocketServer } from 'ws'
+
+import type { Notification } from './types'
 
 // Redis client za caching i pub/sub
 export const redis = new Redis({
   host: process.env.REDIS_HOST || 'localhost',
-  port: parseInt(process.env.REDIS_PORT || '6379'),
+  port: parseInt(process.env.REDIS_PORT || '6379', 10),
   password: process.env.REDIS_PASSWORD,
   maxRetriesPerRequest: 3,
   lazyConnect: true,
@@ -15,7 +17,7 @@ export const redis = new Redis({
 let wss: WebSocketServer | null = null
 const connectedClients = new Map<string, Set<WebSocket>>()
 
-export function initializeWebSocketServer(server: any) {
+export function initializeWebSocketServer(server: HttpServer) {
   wss = new WebSocketServer({ server })
   
   wss.on('connection', (ws: WebSocket, request) => {
@@ -31,7 +33,10 @@ export function initializeWebSocketServer(server: any) {
     if (!connectedClients.has(userId)) {
       connectedClients.set(userId, new Set())
     }
-    connectedClients.get(userId)!.add(ws)
+    const userClients = connectedClients.get(userId)
+    if (userClients) {
+      userClients.add(ws)
+    }
 
     console.log(`User ${userId} connected to notifications`)
 
@@ -56,7 +61,7 @@ export function initializeWebSocketServer(server: any) {
   // Redis subscriber za real-time notifikacije
   const subscriber = new Redis({
     host: process.env.REDIS_HOST || 'localhost',
-    port: parseInt(process.env.REDIS_PORT || '6379'),
+    port: parseInt(process.env.REDIS_PORT || '6379', 10),
     password: process.env.REDIS_PASSWORD,
   })
 
@@ -90,7 +95,7 @@ export function initializeWebSocketServer(server: any) {
 }
 
 // Broadcast notifikaciju specifičnom korisniku
-export function broadcastToUser(userId: string, notification: any) {
+export function broadcastToUser(userId: string, notification: Notification) {
   const userClients = connectedClients.get(userId)
   if (userClients) {
     const message = JSON.stringify({
@@ -107,7 +112,7 @@ export function broadcastToUser(userId: string, notification: any) {
 }
 
 // Broadcast notifikaciju svim korisnicima
-export function broadcastToAll(notification: any) {
+export function broadcastToAll(notification: Notification) {
   const message = JSON.stringify({
     type: 'notification',
     data: notification
@@ -127,7 +132,7 @@ export const NotificationCache = {
   UNREAD_PREFIX: 'unread_count:',
 
   // Cache notifikaciju
-  async cacheNotification(notification: any) {
+  async cacheNotification(notification: Notification) {
     const key = `${NotificationCache.CACHE_PREFIX}${notification.id}`
     await redis.setex(key, 3600, JSON.stringify(notification)) // 1 sat cache
   },
@@ -140,7 +145,7 @@ export const NotificationCache = {
   },
 
   // Cache korisničke notifikacije
-  async cacheUserNotifications(userId: string, notifications: any[]) {
+  async cacheUserNotifications(userId: string, notifications: Notification[]) {
     const key = `${NotificationCache.USER_PREFIX}${userId}`
     await redis.setex(key, 300, JSON.stringify(notifications)) // 5 minuta cache
   },
@@ -162,7 +167,7 @@ export const NotificationCache = {
   async getCachedUnreadCount(userId: string): Promise<number | null> {
     const key = `${NotificationCache.UNREAD_PREFIX}${userId}`
     const cached = await redis.get(key)
-    return cached ? parseInt(cached) : null
+    return cached ? parseInt(cached, 10) : null
   },
 
   // Invalidiraj cache za korisnika
@@ -186,12 +191,12 @@ export const NotificationPublisher = {
   CHANNEL: 'notifications',
 
   // Publikuj notifikaciju
-  async publishNotification(notification: any) {
+  async publishNotification(notification: Notification) {
     await redis.publish(NotificationPublisher.CHANNEL, JSON.stringify(notification))
   },
 
   // Publikuj bulk notifikacije
-  async publishBulkNotifications(notifications: any[]) {
+  async publishBulkNotifications(notifications: Notification[]) {
     const pipeline = redis.pipeline()
     notifications.forEach(notification => {
       pipeline.publish(NotificationPublisher.CHANNEL, JSON.stringify(notification))

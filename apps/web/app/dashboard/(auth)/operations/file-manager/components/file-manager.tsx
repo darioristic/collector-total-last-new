@@ -1,5 +1,6 @@
 "use client";
 
+// biome-ignore assist/source/organizeImports: imports are organized manually for better readability
 import React, { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -190,9 +191,9 @@ export function FileManager() {
   const parseDate = (dateStr: string): number => {
     const [day, month, year] = dateStr.split(".");
     return new Date(
-      2000 + Number.parseInt(year),
-      Number.parseInt(month) - 1,
-      Number.parseInt(day)
+      2000 + Number.parseInt(year, 10),
+      Number.parseInt(month, 10) - 1,
+      Number.parseInt(day, 10)
     ).getTime();
   };
 
@@ -321,7 +322,7 @@ export function FileManager() {
                       </BreadcrumbItem>
                       <BreadcrumbSeparator />
                       {pathSegments.map((segment, i) => (
-                        <React.Fragment key={`breadcrumb-${segment}-${i}`}>
+                        <React.Fragment key={`breadcrumb-${segment}-${pathSegments.slice(0, i + 1).join('/')}`}>
                           <BreadcrumbItem
                             className="cursor-pointer"
                             onClick={() => handleBreadcrumbClick(i)}>
@@ -458,11 +459,10 @@ export function FileManager() {
                       <DropdownMenuSeparator />
                       <DropdownMenuItem>Move</DropdownMenuItem>
                       <DropdownMenuItem>Copy</DropdownMenuItem>
-                      <DropdownMenuItem className="text-red-600!">Delete</DropdownMenuItem>
+                      <DropdownMenuItem className="text-red-600">Delete</DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </div>
-              </div>
               </li>
             ))}
 

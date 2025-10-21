@@ -8,7 +8,7 @@ export async function generateMetadata() {
   return generateMeta({
     title: "Mail App",
     description:
-      "Easily organize incoming and outgoing mail with the mail management template. Built with shadcn/ui, Next.js and Tailwind CSS.",
+      "Easily organize incoming and outgoing mail with the mail management template. Built with Collector CRM, Next.js and Tailwind CSS.",
     canonical: "/apps/mail"
   });
 }

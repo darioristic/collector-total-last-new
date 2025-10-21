@@ -56,7 +56,7 @@ export function AddNoteModal() {
               src={imagePreview}
               width={200}
               height={200}
-              alt="shadcn/ui"
+              alt="Collector CRM"
               className="aspect-video w-full rounded-tl-md rounded-tr-md object-cover"
               unoptimized
             />

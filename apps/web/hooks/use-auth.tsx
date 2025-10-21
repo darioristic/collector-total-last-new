@@ -1,16 +1,24 @@
 'use client';
 
-import { useState, useEffect, createContext, useContext, ReactNode } from 'react';
+// biome-ignore assist/source/organizeImports: manually organized for better readability
+import { createContext, useContext, useEffect, useState } from 'react';
+import type { ReactNode } from 'react';
 
 // Helper functions for cookie management
 const setCookie = (name: string, value: string, days: number) => {
   const expires = new Date();
   expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
-  document.cookie = `${name}=${value}; path=/; expires=${expires.toUTCString()}; secure; samesite=strict`;
+  const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+  
+  // Use standard cookie setting approach
+  const cookieString = `${name}=${encodeURIComponent(value)}; path=/; expires=${expires.toUTCString()}; ${isLocalhost ? '' : 'secure;'} samesite=strict`;
+  
+  document.cookie = cookieString;
 };
 
 const deleteCookie = (name: string) => {
-  document.cookie = `${name}=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
+  const cookieString = `${name}=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
+  document.cookie = cookieString;
 };
 
 interface User {
@@ -30,6 +38,7 @@ interface AuthContextType {
   login: (email: string, password: string) => Promise<void>;
   register: (data: { email: string; password: string; name: string; organizationName?: string }) => Promise<void>;
   logout: () => Promise<void>;
+  updateUserOrganization: (organizationData: { name: string; logoUrl?: string }) => void;
   loading: boolean;
   error: string | null;
 }
@@ -48,11 +57,40 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const storedUser = localStorage.getItem('auth_user');
     
     if (storedToken && storedUser) {
+      // Set token and user immediately for better UX
       setToken(storedToken);
       setUser(JSON.parse(storedUser));
+      setLoading(false);
+      
+      // Verify token in background
+      const verifyToken = async () => {
+        try {
+          const response = await authenticatedFetch('/api/users/profile', {
+            method: 'GET'
+          }, storedToken);
+          
+          if (!response.ok) {
+            // Token is invalid, clear storage
+            setToken(null);
+            setUser(null);
+            localStorage.removeItem('auth_token');
+            localStorage.removeItem('auth_user');
+            deleteCookie('auth_token');
+          }
+        } catch {
+          // Token verification failed, clear storage
+          setToken(null);
+          setUser(null);
+          localStorage.removeItem('auth_token');
+          localStorage.removeItem('auth_user');
+          deleteCookie('auth_token');
+        }
+      };
+      
+      verifyToken();
+    } else {
+      setLoading(false);
     }
-    
-    setLoading(false);
   }, []);
 
   const login = async (email: string, password: string) => {
@@ -167,6 +205,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       
       // Clear cookie
       deleteCookie('auth_token');
+      
+      // Redirect to login
+      window.location.href = '/dashboard/login';
+    }
+  };
+
+  const updateUserOrganization = (organizationData: { name: string; logoUrl?: string }) => {
+    if (user) {
+      const updatedUser = {
+        ...user,
+        organization: {
+          id: user.organization?.id || '',
+          name: organizationData.name,
+        }
+      };
+      
+      setUser(updatedUser);
+      localStorage.setItem('auth_user', JSON.stringify(updatedUser));
+      console.log('Updated user organization:', organizationData);
     }
   };
 
@@ -176,6 +233,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     login,
     register,
     logout,
+    updateUserOrganization,
     loading,
     error,
   };
@@ -205,7 +263,7 @@ export async function authenticatedFetch(url: string, options: RequestInit = {},
   };
   
   if (authToken) {
-    headers['Authorization'] = `Bearer ${authToken}`;
+    headers.Authorization = `Bearer ${authToken}`;
   }
   
   const response = await fetch(url, {
@@ -218,7 +276,7 @@ export async function authenticatedFetch(url: string, options: RequestInit = {},
     localStorage.removeItem('auth_token');
     localStorage.removeItem('auth_user');
     deleteCookie('auth_token');
-    window.location.href = '/dashboard/login/v2';
+    window.location.href = '/dashboard/login';
     throw new Error('Authentication required');
   }
   

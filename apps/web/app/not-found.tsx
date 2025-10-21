@@ -1,10 +1,21 @@
+'use client';
+
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 
 export default function NotFound() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    // Check if user is logged in by looking for auth token
+    const token = localStorage.getItem('auth_token');
+    setIsLoggedIn(!!token);
+  }, []);
+
   return (
     <div className="bg-background grid h-screen items-center pb-8 lg:grid-cols-2 lg:pb-0">
       <div className="text-center">
@@ -13,11 +24,13 @@ export default function NotFound() {
           Page not found
         </h1>
         <p className="text-muted-foreground mt-6 text-base leading-7">
-          Sorry, we couldn’t find the page you’re looking for.
+          Sorry, we couldn't find the page you're looking for.
         </p>
         <div className="mt-10 flex items-center justify-center gap-x-2">
           <Button size="lg" asChild>
-            <Link href="/dashboard">Go back home</Link>
+            <Link href={isLoggedIn ? "/dashboard/default" : "/dashboard/login"}>
+              Go back home
+            </Link>
           </Button>
           <Button size="lg" variant="ghost">
             Contact support <ArrowRight className="ms-2 h-4 w-4" />
@@ -25,12 +38,12 @@ export default function NotFound() {
         </div>
       </div>
       <div className="hidden lg:block">
-        <img
+        <Image
           src={`/404.svg`}
           width={300}
           height={400}
           className="w-full object-contain lg:max-w-2xl"
-          alt="not found image"
+          alt="404 illustration"
         />
       </div>
     </div>

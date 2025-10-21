@@ -5,7 +5,8 @@ config();
 const isProduction = process.env.NODE_ENV === "production";
 
 const nextConfig = {
-  assetPrefix: isProduction ? "https://dashboard.shadcnuikit.com" : undefined,
+  assetPrefix: isProduction ? "https://dashboard.collector.crm" : undefined,
+  outputFileTracingRoot: "/Users/darioristic/Cursor/CRM-ERP-NEW",
   env: {
     NOTIFICATION_SERVICE_URL: process.env.NOTIFICATION_SERVICE_URL,
   },

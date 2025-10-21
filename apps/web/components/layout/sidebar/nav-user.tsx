@@ -29,7 +29,7 @@ export function NavUser() {
   const handleLogout = async () => {
     try {
       await logout();
-      router.push('/dashboard/login/v2');
+      router.push('/dashboard/login');
     } catch (error) {
       console.error('Logout error:', error);
     }
@@ -41,7 +41,7 @@ export function NavUser() {
       <SidebarMenu>
         <SidebarMenuItem>
           <SidebarMenuButton asChild>
-            <a href="/dashboard/login/v2">
+            <a href="/dashboard/login">
               <UserCircle2Icon />
               <span>Login</span>
             </a>

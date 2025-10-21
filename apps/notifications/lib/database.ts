@@ -48,7 +48,7 @@ export const NotificationDatabase = {
   ) {
     const { limit = 50, offset = 0, unreadOnly = false } = options
 
-    const where: any = {
+    const where = {
       userId,
       ...(unreadOnly && { readAt: null })
     }
@@ -119,9 +119,9 @@ export const NotificationDatabase = {
       pushEnabled?: boolean
       smsEnabled?: boolean
       inAppEnabled?: boolean
-      emailTypes?: string
-      pushTypes?: string
-      smsTypes?: string
+      emailTypes?: string[]
+      pushTypes?: string[]
+      smsTypes?: string[]
       quietHoursStart?: string
       quietHoursEnd?: string
     }
@@ -147,7 +147,7 @@ export const NotificationDatabase = {
     })
     
     return devices.map(device => device.deviceToken)
-  }
+  },
 
   // Registruj device token
   async registerDeviceToken(
@@ -174,7 +174,7 @@ export const NotificationDatabase = {
         isActive: true
       }
     })
-  }
+  },
 
   // Deaktiviraj device token
   async deactivateDeviceToken(userId: string, deviceToken: string) {

@@ -29,7 +29,7 @@ export function DigitalWallets() {
               className="size-6 object-contain"
               src={"/images/crypto-icons/bitcoin.svg"}
               unoptimized
-              alt="shadcn/ui"
+              alt="Collector CRM"
             />
             <span>Bitcoin Wallet</span>
           </div>
@@ -45,7 +45,7 @@ export function DigitalWallets() {
               className="size-6 object-contain"
               src={"/images/crypto-icons/ethereum.svg"}
               unoptimized
-              alt="shadcn/ui"
+              alt="Collector CRM"
             />
             <span>Ethereum Wallet</span>
           </div>

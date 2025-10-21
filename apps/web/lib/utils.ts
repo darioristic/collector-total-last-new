@@ -23,9 +23,9 @@ export function generateMeta({
   canonical: string;
 }): Metadata {
   return {
-    title: `${title} - Shadcn UI Kit`,
+    title: `${title} - Collector CRM`,
     description: description,
-    metadataBase: new URL(`https://shadcnuikit.com`),
+    metadataBase: new URL(`https://collector.crm`),
     alternates: {
       canonical: `/dashboard${canonical}`
     },

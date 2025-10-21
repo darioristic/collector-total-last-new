@@ -6,8 +6,8 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 // Notification Models
@@ -19,7 +19,7 @@ model Notification {
   type      String   @default("info") // info, success, warning, error, confirm
   channel   String   @default("in_app") // in_app, email, push, sms
   status    String   @default("pending") // pending, sent, delivered, failed, read
-  metadata  String?
+  metadata  Json?
   readAt    DateTime?
   expiresAt DateTime?
   createdAt DateTime @default(now())
@@ -35,9 +35,9 @@ model NotificationPreferences {
   pushEnabled       Boolean  @default(true)
   smsEnabled        Boolean  @default(false)
   inAppEnabled      Boolean  @default(true)
-  emailTypes        String   @default("info,success,warning,error")
-  pushTypes         String   @default("info,success,warning,error")
-  smsTypes          String   @default("error")
+  emailTypes        String[] @default(["info", "success", "warning", "error"])
+  pushTypes         String[] @default(["info", "success", "warning", "error"])
+  smsTypes          String[] @default(["error"])
   quietHoursStart   String?
   quietHoursEnd     String?
   createdAt         DateTime @default(now())

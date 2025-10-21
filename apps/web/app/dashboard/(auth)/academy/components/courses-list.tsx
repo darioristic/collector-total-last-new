@@ -114,7 +114,7 @@ export const columns: ColumnDef<Course>[] = [
           className="size-8"
           src={row.original.image}
           unoptimized
-          alt="shadcn/ui"
+          alt="Collector CRM"
         />
         <div className="capitalize">{row.getValue("name")}</div>
       </div>

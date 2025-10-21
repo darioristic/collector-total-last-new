@@ -1,8 +1,7 @@
 'use client';
 
 import Link from "next/link";
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, useId } from 'react';
 import { useAuth } from '@/hooks/use-auth';
 
 import { Button } from "@/components/ui/button";
@@ -10,7 +9,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { generateMeta } from "@/lib/utils";
 import { GitHubLogoIcon } from "@radix-ui/react-icons";
 import { Loader2 } from "lucide-react";
 
@@ -21,7 +19,8 @@ export default function LoginPage() {
   const [error, setError] = useState('');
   
   const { login } = useAuth();
-  const router = useRouter();
+  const emailId = useId();
+  const passwordId = useId();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -59,9 +58,9 @@ export default function LoginPage() {
             )}
             
             <div className="grid gap-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor={emailId}>Email</Label>
               <Input 
-                id="email" 
+                id={emailId} 
                 type="email" 
                 placeholder="contact@bundui.com" 
                 value={email}
@@ -71,7 +70,7 @@ export default function LoginPage() {
             </div>
             <div className="grid gap-2">
               <div className="flex items-center">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor={passwordId}>Password</Label>
                 <Link
                   href="/dashboard/forgot-password"
                   className="ml-auto inline-block text-sm underline">
@@ -79,7 +78,7 @@ export default function LoginPage() {
                 </Link>
               </div>
               <Input 
-                id="password" 
+                id={passwordId} 
                 type="password" 
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -108,6 +107,7 @@ export default function LoginPage() {
             <div className="grid grid-cols-1 gap-3">
               <Button variant="outline" className="w-full">
                 <svg viewBox="0 0 24 24">
+                  <title>Google logo</title>
                   <path
                     fill="currentColor"
                     d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"

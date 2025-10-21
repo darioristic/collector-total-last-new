@@ -17,7 +17,7 @@ export function UserNav() {
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="relative h-8 w-8 rounded-full">
           <Avatar className="h-9 w-9">
-            <AvatarImage src="/avatars/03.png" alt="@shadcn" />
+            <AvatarImage src="/avatars/03.png" alt="@collector" />
             <AvatarFallback>SC</AvatarFallback>
           </Avatar>
         </Button>
@@ -25,7 +25,7 @@ export function UserNav() {
       <DropdownMenuContent className="w-56" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
-            <p className="text-sm leading-none font-medium">shadcn</p>
+            <p className="text-sm leading-none font-medium">collector</p>
             <p className="text-muted-foreground text-xs leading-none">m@example.com</p>
           </div>
         </DropdownMenuLabel>

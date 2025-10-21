@@ -238,7 +238,7 @@ export const columns: ColumnDef<Project>[] = [
       return (
         <div className="flex items-center gap-4">
           <Avatar>
-            <AvatarImage src={client.avatar} alt="shadcn ui kit" />
+            <AvatarImage src={client.avatar} alt="Collector CRM" />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
           {client.name}

@@ -30,7 +30,7 @@ export function ChatContent() {
           height={200}
           className="block max-w-sm dark:hidden"
           src={`/not-selected-chat.svg`}
-          alt="shadcn/ui"
+          alt="Collector CRM"
           unoptimized
         />
         <Image
@@ -38,7 +38,7 @@ export function ChatContent() {
           height={200}
           className="hidden max-w-sm dark:block"
           src={`/not-selected-chat-light.svg`}
-          alt="shadcn/ui"
+          alt="Collector CRM"
         />
       </figure>
     );

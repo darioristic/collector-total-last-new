@@ -5,7 +5,7 @@ config();
 const isProduction = process.env.NODE_ENV === "production";
 
 const nextConfig = {
-  assetPrefix: isProduction ? "https://dashboard.shadcnuikit.com" : undefined,
+  assetPrefix: isProduction ? "https://dashboard.collector.crm" : undefined,
   env: {
     NOTIFICATION_SERVICE_URL: process.env.NOTIFICATION_SERVICE_URL || 'http://localhost:3003',
   },

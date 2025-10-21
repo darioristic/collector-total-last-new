@@ -17,44 +17,19 @@ import {
   ArchiveRestoreIcon,
   BadgeDollarSignIcon,
   BrainCircuitIcon,
-  BrainIcon,
   Building2Icon,
-  CalendarIcon,
   ChartBarDecreasingIcon,
   ChartPieIcon,
   ChevronRight,
-  ClipboardCheckIcon,
-  ClipboardMinusIcon,
-  ComponentIcon,
-  CookieIcon,
-  FingerprintIcon,
   FolderDotIcon,
-  FolderIcon,
-  GaugeIcon,
-  GraduationCapIcon,
-  ImagesIcon,
-  KeyIcon,
   MailIcon,
   MessageSquareIcon,
-  ProportionsIcon,
-  SettingsIcon,
   ShoppingBagIcon,
-  SquareCheckIcon,
-  SquareKanbanIcon,
-  StickyNoteIcon,
   UserIcon,
   UsersIcon,
   WalletMinimalIcon,
   type LucideIcon,
-  GithubIcon,
-  RedoDotIcon,
-  BrushCleaningIcon,
-  CreditCardIcon,
-  SpeechIcon,
-  MessageSquareHeartIcon,
-  BookAIcon,
-  ShieldIcon,
-  CogIcon
+  CreditCardIcon
 } from "lucide-react";
 import Link from "next/link";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
@@ -158,8 +133,7 @@ export const navItems: NavGroup[] = [
       {
         title: "File Manager",
         href: "/dashboard/operations/file-manager",
-        icon: ArchiveRestoreIcon,
-        isNew: true
+        icon: ArchiveRestoreIcon
       },
       {
         title: "HR Employee Management",
@@ -173,7 +147,22 @@ export const navItems: NavGroup[] = [
     items: [
       { title: "Chats", href: "/dashboard/communication/chat", icon: MessageSquareIcon, isDataBadge: "5" },
       { title: "Mail", href: "/dashboard/communication/mail", icon: MailIcon },
-      { title: "AI Chat", href: "/dashboard/communication/ai-chat", icon: BrainCircuitIcon, isNew: true }
+      { title: "AI Chat", href: "/dashboard/communication/ai-chat", icon: BrainCircuitIcon }
+    ]
+  },
+  {
+    title: "Settings",
+    items: [
+      { 
+        title: "Profile Settings", 
+        href: "/dashboard/admin-panel/settings", 
+        icon: UserIcon
+      },
+      { 
+        title: "Workspace Settings", 
+        href: "/dashboard/workspace-settings", 
+        icon: Building2Icon
+      }
     ]
   }
 ];

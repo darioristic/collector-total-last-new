@@ -27,7 +27,7 @@ export function WelcomeCard() {
               src={`/academy-dashboard-light.svg`}
               className="block w-full dark:hidden"
               unoptimized
-              alt="shadcn/ui"
+              alt="Collector CRM"
             />
             <Image
               width={100}
@@ -35,7 +35,7 @@ export function WelcomeCard() {
               src={`/academy-dashboard-dark.svg`}
               className="hidden w-full dark:block"
               unoptimized
-              alt="shadcn/ui"
+              alt="Collector CRM"
             />
           </figure>
           <Image

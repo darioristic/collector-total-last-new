@@ -48,7 +48,7 @@ sleep 5
 
 # Setup database
 echo -e "${BLUE}🗄️  Setting up database...${NC}"
-(cd apps/web && bunx prisma db push --accept-data-loss && bun run db:seed)
+(cd apps/web && bunx prisma generate)
 
 echo ""
 echo -e "${GREEN}🎉 Development environment ready!${NC}"

@@ -1,14 +1,15 @@
+// biome-ignore assist/source/organizeImports: imports are organized correctly
 import Link from "next/link";
 import { Settings } from "lucide-react";
-import { CompleteYourProfileCard } from "./complete-your-profile";
-import { generateMeta } from "@/lib/utils";
 
+import { generateMeta } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { CardSkills } from "@/app/dashboard/(auth)/pages/profile/card-skills";
-import { LatestActivity } from "@/app/dashboard/(auth)/pages/profile/latest-activity";
 import { AboutMe } from "@/app/dashboard/(auth)/pages/profile/about-me";
+import { CardSkills } from "@/app/dashboard/(auth)/pages/profile/card-skills";
+import { CompleteYourProfileCard } from "./complete-your-profile";
 import { Connections } from "@/app/dashboard/(auth)/pages/profile/connections";
+import { LatestActivity } from "@/app/dashboard/(auth)/pages/profile/latest-activity";
 import { ProfileCard } from "@/app/dashboard/(auth)/pages/profile/profile-card";
 
 export async function generateMetadata() {

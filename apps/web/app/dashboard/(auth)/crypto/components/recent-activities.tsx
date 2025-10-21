@@ -78,7 +78,7 @@ export function RecentActivities() {
                 src={activity.icon}
                 width={40}
                 height={40}
-                alt="shadcn/ui"
+                alt="Collector CRM"
                 unoptimized
               />
               <div className="ml-4 space-y-1">

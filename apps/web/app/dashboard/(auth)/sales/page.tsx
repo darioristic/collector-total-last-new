@@ -17,7 +17,7 @@ export async function generateMetadata() {
   return generateMeta({
     title: "Sales Admin Dashboard",
     description:
-      "A modern and elegant responsive sales admin Dashboard. Easily manage, analyze, and report your sales data. Built with shadcn/ui, Tailwind CSS, Next.js.",
+      "A modern and elegant responsive sales admin Dashboard. Easily manage, analyze, and report your sales data. Built with Collector CRM, Tailwind CSS, Next.js.",
     canonical: "/sales"
   });
 }

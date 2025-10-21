@@ -7,7 +7,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return generateMeta({
     title: "Courses",
     description:
-      "An app template used to browse, register for, and manage training courses. Built with shadcn/ui, Tailwind CSS, Next.js and React.",
+      "An app template used to browse, register for, and manage training courses. Built with Collector CRM, Tailwind CSS, Next.js and React.",
     canonical: "/courses"
   });
 }

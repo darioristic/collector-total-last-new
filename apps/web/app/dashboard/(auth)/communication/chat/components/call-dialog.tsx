@@ -22,7 +22,7 @@ export function CallDialog() {
         </VisuallyHidden>
         <div className="flex items-center gap-4">
           <Avatar className="size-16">
-            <AvatarImage src={`/images/avatars/04.png`} alt="shadcn/ui avatar" />
+            <AvatarImage src={`/images/avatars/04.png`} alt="Collector CRM avatar" />
           </Avatar>
           <div className="text-lg">Jennica calling ...</div>
         </div>

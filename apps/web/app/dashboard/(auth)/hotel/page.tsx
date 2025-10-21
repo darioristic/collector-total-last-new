@@ -7,7 +7,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return generateMeta({
     title: "Hotel Admin Dashboard",
     description:
-      "On the hotel admin dashboard, you can see your turnover, manage reservations, and view your customers. Built with shadcn/ui, Tailwind CSS, Next.js.",
+      "On the hotel admin dashboard, you can see your turnover, manage reservations, and view your customers. Built with Collector CRM, Tailwind CSS, Next.js.",
     canonical: "/hotel"
   });
 }

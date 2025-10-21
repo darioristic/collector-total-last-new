@@ -24,7 +24,7 @@ export default function Page() {
           width={1000}
           height={1000}
           src={`/images/extra/image4.jpg`}
-          alt="shadcn/ui login page"
+          alt="Collector CRM register page"
           className="h-full w-full object-cover"
           unoptimized
         />

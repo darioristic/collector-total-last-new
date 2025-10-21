@@ -13,7 +13,7 @@ export async function generateMetadata() {
   return generateMeta({
     title: "Crypto Admin Dashboard",
     description:
-      "The crypto admin dashboard is a template for effectively tracking cryptocurrency prices, market trends and portfolio performance. Built with shadcn/ui.",
+      "The crypto admin dashboard is a template for effectively tracking cryptocurrency prices, market trends and portfolio performance. Built with Collector CRM.",
     canonical: "/crypto"
   });
 }

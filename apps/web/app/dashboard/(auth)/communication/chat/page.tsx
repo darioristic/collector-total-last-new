@@ -9,7 +9,7 @@ export async function generateMetadata() {
   return generateMeta({
     title: "Chat App",
     description:
-      "A template to create chat and messaging apps for your customers or users. Built with shadcn/ui, Next.js and Tailwind CSS.",
+      "A template to create chat and messaging apps for your customers or users. Built with Collector CRM, Next.js and Tailwind CSS.",
     canonical: "/apps/chat"
   });
 }

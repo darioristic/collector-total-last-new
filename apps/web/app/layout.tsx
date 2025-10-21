@@ -35,6 +35,7 @@ export default async function RootLayout({
 
   return (
     <html lang="en" suppressHydrationWarning>
+      <head />
       <body
         suppressHydrationWarning
         className={cn("bg-background group/layout font-sans", fontVariables)}
@@ -46,8 +47,8 @@ export default async function RootLayout({
           disableTransitionOnChange>
           <AuthProvider>
             <ActiveThemeProvider initialTheme={themeSettings}>
-              {children}
-              <Toaster position="top-center" richColors />
+              <main>{children}</main>
+              <Toaster />
               <NextTopLoader color="var(--primary)" showSpinner={false} height={2} shadow-sm="none" />
               {process.env.NODE_ENV === "production" ? <GoogleAnalyticsInit /> : null}
             </ActiveThemeProvider>

@@ -1,6 +1,10 @@
 'use client';
 
-import { Bell, LogOut, MoonIcon, SunIcon, Settings, Shield } from "lucide-react";
+// biome-ignore assist/source/organizeImports: imports are organized manually for better readability
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useTheme } from "next-themes";
+import { Bell, LogOut, MoonIcon, Settings, SunIcon } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -12,11 +16,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
-import Link from "next/link";
-// import { Progress } from "@/components/ui/progress";
 import { useAuth } from "@/hooks/use-auth";
-import { useRouter } from "next/navigation";
-import { useTheme } from "next-themes";
+// import { Progress } from "@/components/ui/progress";
 // import {
 //   PresetSelector,
 //   SidebarModeSelector,
@@ -34,7 +35,7 @@ export default function UserMenu() {
   const handleLogout = async () => {
     try {
       await logout();
-      router.push('/dashboard/login/v2');
+      router.push('/dashboard/login');
     } catch (error) {
       console.error('Logout error:', error);
     }
@@ -42,7 +43,7 @@ export default function UserMenu() {
 
   if (!user) {
     return (
-      <Link href="/dashboard/login/v2">
+        <Link href="/dashboard/login">
         <Avatar>
           <AvatarFallback className="rounded-lg">?</AvatarFallback>
         </Avatar>
@@ -96,16 +97,8 @@ export default function UserMenu() {
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        {user.role === 'admin' && (
-          <DropdownMenuItem asChild>
-            <Link href="http://localhost:3001/admin" target="_blank">
-              <Shield />
-              Workspace Admin
-            </Link>
-          </DropdownMenuItem>
-        )}
         <DropdownMenuItem asChild>
-          <Link href="/dashboard/pages/profile">
+          <Link href="/dashboard/admin-panel/settings">
             <Settings />
             Profile & Settings
           </Link>
